@@ -14,7 +14,7 @@
                         <ol class="breadcrumb text-right">
                             <li><a href="#"><?php echo $c_name ?></a></li>
                             <li><a href="#">Data</a></li>
-                            <li class="active">Insert</li>
+                            <li class="active">Update</li>
                         </ol>
                     </div>
                 </div>
@@ -36,47 +36,56 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Insert Data</strong>
+                        <strong class="card-title">Update Data</strong>
                     </div>
                     <div class="card-body">
-                        <?php echo form_open(); ?>
+                        <?php echo form_open_multipart(); ?>
+                        <div class="form-group row">
+                            <label for="input-image" class="col-sm-2 col-form-label text-right">Image</label>
+                            <div class="col-sm-8 col-md-4">
+                                <img src="<?php echo base_url('assets/images/product/'.$product->image) ?>" alt="" id="image-preview" class="w-50">
+                                <input type="file" name="image" class="form-control" id="input-image">
+                                <?php echo form_error('image') ?>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="input-name" class="col-sm-2 col-form-label text-right">Name</label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="text" name="name" class="form-control" id="input-name" value="<?php echo set_value('name') ?>">
+                                <input type="text" name="name" class="form-control" id="input-name" value="<?php echo $product->name ?>">
                                 <?php echo form_error('name') ?>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="input-price" class="col-sm-2 col-form-label text-right">Price</label>
+                            <div class="col-sm-8 col-md-4">
+                                <input type="number" min="0" name="price" class="form-control" id="input-price" value="<?php echo $product->price ?>">
+                                <?php echo form_error('price') ?>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="input-quantity" class="col-sm-2 col-form-label text-right">Quantity</label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="text" name="quantity" class="form-control" id="input-quantity" value="<?php echo set_value('quantity') ?>">
+                                <input type="number" min="0" name="quantity" class="form-control" id="input-quantity" value="<?php echo $product->quantity ?>">
                                 <?php echo form_error('quantity') ?>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="input-fk_product" class="col-sm-2 col-form-label text-right">Product</label>
+                            <label for="input-type" class="col-sm-2 col-form-label text-right">Type</label>
                             <div class="col-sm-8 col-md-4">
-                                <select name="fk_product" class="form-control">
-                                    <?php foreach ($product as $key => $value): ?>
-                                        <option value="<?php echo $value->id_product ?>"><?php echo $value->name ?></option>
-                                    <?php endforeach ?>
+                                <select name="type" class="form-control">
+                                    <option value="1">Storeable</option>
+                                    <option value="2">Consumable</option>
+                                    <option value="3">Services</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="input-component" class="col-sm-2 col-form-label text-right">Component</label>
-                            <div class="col-sm-8 col-md-4">
-                                <div id="component-container" class="mb-2">
-
-                                </div>
-                                <a href="#" class="btn btn-outline-primary" onclick="add_component()"><i class="fa fa-plus"></i> Add Component</a>
+                                <script>
+                                    $('select[name="type"]').val('<?php echo $product->type ?>')
+                                </script>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="input-submit" class="col-sm-2 col-form-label text-right"></label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+                                <input type="submit" name="submit" value="Submit" class="btn btn-success">
                                 <a href="<?php echo base_url($c_name) ?>" class="btn btn-secondary">Back</a>
                             </div>
                         </div>
@@ -89,32 +98,21 @@
         </div>
     </div>
 </div>
-<div style="display: none" id="component-sample">
-    <div class="input-group mt-2 component-title" id="">
-        <select name="component_product[]" class="form-control">
-            <?php foreach ($product as $key => $value): ?>
-                <option value="<?php echo $value->id_product ?>"><?php echo $value->name ?></option>
-            <?php endforeach ?>
-        </select>
-        <input type="number" min="1" value="1" name="component_quantity[]" class="form-control">
-        <div class="input-group-append">
-            <a class="btn btn-outline-danger component-button" onclick="remove_component(this.id)" id="component-1"><i class="fa fa-trash"></i></a>
-        </div>
-    </div>
-</div>
 <script>
-    var index = 1;
-    var add_component = () =>{
-        $('#component-sample').find('.component-title').attr('id','component-'+index+'-title');
-        $('#component-sample').find('.component-button').attr('id','component-'+index);
-        var html = $('#component-sample').html();
-        $('#component-container').append(html);
-        index++;
+    function readURL(input) {
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#image-preview').attr('src', e.target.result);
     }
 
-    var remove_component = (id) => {
-        id = id+'-title';
-        $('#'+id).remove();
-    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
 
+$("#input-image").change(function() {
+  readURL(this);
+});
 </script>

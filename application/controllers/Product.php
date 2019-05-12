@@ -48,29 +48,116 @@ class Product extends CI_Controller {
 		if($this->form_validation->run() == false){
 			$this->load->view('layouts/default',$view);
 		}else{
-			var_dump($_POST);
-			$set = [
-				'name' => $this->input->post('name'),
-				'price' => $this->input->post('price'),
-				'quantity' => $this->input->post('quantity'),
-				'image' => $this->input->post('image'),
-				'type' => $this->input->post('type'),
-				'created_by' => $this->session->userdata('id_users')
-			];
-			$insert = $this->db->insert('product',$set);
-			if ($insert) {
-				$this->session->set_flashdata('alert_type','success');
-				$this->session->set_flashdata('alert_message','Insert <b>'.$set['name'].'</b> success');
-			}else{
-				$this->session->set_flashdata('alert_type','warning');
-				$this->session->set_flashdata('alert_message','Insert <b>'.$set['name'].'</b> failed');
-			}
+			$config['upload_path'] = './assets/images/product/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']  = '2000';
+			$config['encrypt_name'] = TRUE;
 
-			$condition = $this->input->post('submit') == "Submit";
-			if($condition){
-				redirect('Product');
-			}else{
+			$this->load->library('upload', $config);
+
+			if ( ! $this->upload->do_upload('image')){
+				$error = $this->upload->display_errors('','');
+				$this->session->set_flashdata('alert_type','warning');
+				$this->session->set_flashdata('alert_message','Upload Message : '.$error);
 				redirect('Product/insert');
+			}
+			else{
+				$upload_data = $this->upload->data();
+				$set = [
+					'name' => $this->input->post('name'),
+					'price' => $this->input->post('price'),
+					'quantity' => $this->input->post('quantity'),
+					'image' => $upload_data['file_name'],
+					'type' => $this->input->post('type'),
+					'created_by' => $this->session->userdata('id_users')
+				];
+				$insert = $this->db->insert('product',$set);
+				if ($insert) {
+					$this->session->set_flashdata('alert_type','success');
+					$this->session->set_flashdata('alert_message','Insert <b>'.$set['name'].'</b> success');
+				}else{
+					$this->session->set_flashdata('alert_type','warning');
+					$this->session->set_flashdata('alert_message','Insert <b>'.$set['name'].'</b> failed');
+				}
+
+				$condition = $this->input->post('submit') == "Submit";
+				if($condition){
+					redirect('Product');
+				}else{
+					redirect('Product/insert');
+				}
+			}
+		}
+	}
+
+	public function update($id)
+	{
+		$view = [
+			'c_name' => "Product",
+			'pages' => 'product/update',
+			'product' => $this->db->where('id_product',$id)->get('product')->row(0),
+		];
+
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('name','Name','required|trim');
+		$this->form_validation->set_rules('price','Price','required|trim');
+		$this->form_validation->set_rules('quantity','Quantity','required|trim');
+		$this->form_validation->set_error_delimiters();
+
+		if($this->form_validation->run() == false){
+			$this->load->view('layouts/default',$view);
+		}else{
+			$config['upload_path'] = './assets/images/product/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']  = '2000';
+			$config['encrypt_name'] = TRUE;
+
+			$this->load->library('upload', $config);
+
+			if($_FILES['image']['name'] != ""){
+				if ( ! $this->upload->do_upload('image')){
+					$error = $this->upload->display_errors('','');
+					$this->session->set_flashdata('alert_type','warning');
+					$this->session->set_flashdata('alert_message','Upload Message : '.$error);
+					redirect('Product/update');
+				}
+				else{
+					$upload_data = $this->upload->data();
+					$set = [
+						'name' => $this->input->post('name'),
+						'price' => $this->input->post('price'),
+						'quantity' => $this->input->post('quantity'),
+						'image' => $upload_data['file_name'],
+						'type' => $this->input->post('type'),
+					];
+					$this->db->where('id_product',$id);
+					$update = $this->db->update('product',$set);
+					if ($update) {
+						$this->session->set_flashdata('alert_type','success');
+						$this->session->set_flashdata('alert_message','Update <b>'.$set['name'].'</b> success');
+					}else{
+						$this->session->set_flashdata('alert_type','warning');
+						$this->session->set_flashdata('alert_message','Update <b>'.$set['name'].'</b> failed');
+					}
+					redirect('Product');
+				}
+			}else{
+				$set = [
+					'name' => $this->input->post('name'),
+					'price' => $this->input->post('price'),
+					'quantity' => $this->input->post('quantity'),
+					'type' => $this->input->post('type'),
+				];
+					$this->db->where('id_product',$id);
+				$update = $this->db->update('product',$set);
+				if ($update) {
+					$this->session->set_flashdata('alert_type','success');
+					$this->session->set_flashdata('alert_message','Update <b>'.$set['name'].'</b> success');
+				}else{
+					$this->session->set_flashdata('alert_type','warning');
+					$this->session->set_flashdata('alert_message','Update <b>'.$set['name'].'</b> failed');
+				}
+				redirect('Product');
 			}
 		}
 	}
@@ -85,7 +172,7 @@ class Product extends CI_Controller {
 		$name = $query->row(0)->name;
 
 		$db_debug = $this->db->db_debug;
-    	$this->db->db_debug = FALSE;
+		$this->db->db_debug = FALSE;
 		$this->db->where('id_product',$id);
 		$delete = $this->db->delete('product');
 		$error = $this->db->error();

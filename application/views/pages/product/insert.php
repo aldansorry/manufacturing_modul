@@ -13,8 +13,8 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="#"><?php echo $c_name ?></a></li>
-                            <li><a href="#">Table</a></li>
-                            <li class="active">Data table</li>
+                            <li><a href="#">Data</a></li>
+                            <li class="active">Insert</li>
                         </ol>
                     </div>
                 </div>
@@ -39,37 +39,38 @@
                         <strong class="card-title">Insert Data</strong>
                     </div>
                     <div class="card-body">
-                        <?php echo form_open(); ?>
+                        <?php echo form_open_multipart(); ?>
                         <div class="form-group row">
-                            <label for="input-name" class="col-sm-2 col-form-label text-right">name</label>
+                            <label for="input-image" class="col-sm-2 col-form-label text-right">Image</label>
+                            <div class="col-sm-8 col-md-4">
+                                <img src="<?php echo base_url('assets/images/') ?>imageholder.png" alt="" id="image-preview" class="w-50">
+                                <input type="file" name="image" class="form-control" id="input-image">
+                                <?php echo form_error('image') ?>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="input-name" class="col-sm-2 col-form-label text-right">Name</label>
                             <div class="col-sm-8 col-md-4">
                                 <input type="text" name="name" class="form-control" id="input-name" value="<?php echo set_value('name') ?>">
                                 <?php echo form_error('name') ?>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="input-price" class="col-sm-2 col-form-label text-right">price</label>
+                            <label for="input-price" class="col-sm-2 col-form-label text-right">Price</label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="text" name="price" class="form-control" id="input-price" value="<?php echo set_value('price') ?>">
+                                <input type="number" min="0" name="price" class="form-control" id="input-price" value="<?php echo set_value('price') ?>">
                                 <?php echo form_error('price') ?>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="input-quantity" class="col-sm-2 col-form-label text-right">quantity</label>
+                            <label for="input-quantity" class="col-sm-2 col-form-label text-right">Quantity</label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="text" name="quantity" class="form-control" id="input-quantity" value="<?php echo set_value('quantity') ?>">
+                                <input type="number" min="0" name="quantity" class="form-control" id="input-quantity" value="<?php echo set_value('quantity') ?>">
                                 <?php echo form_error('quantity') ?>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="input-image" class="col-sm-2 col-form-label text-right">image</label>
-                            <div class="col-sm-8 col-md-4">
-                                <input type="text" name="image" class="form-control" id="input-image" value="<?php echo set_value('image') ?>">
-                                <?php echo form_error('image') ?>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="input-type" class="col-sm-2 col-form-label text-right">type</label>
+                            <label for="input-type" class="col-sm-2 col-form-label text-right">Type</label>
                             <div class="col-sm-8 col-md-4">
                                 <select name="type" class="form-control">
                                     <option value="1">Storeable</option>
@@ -95,3 +96,21 @@
         </div>
     </div>
 </div>
+<script>
+    function readURL(input) {
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#image-preview').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#input-image").change(function() {
+  readURL(this);
+});
+</script>

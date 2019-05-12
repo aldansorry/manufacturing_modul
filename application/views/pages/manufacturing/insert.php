@@ -13,8 +13,8 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="#"><?php echo $c_name ?></a></li>
-                            <li><a href="#">Table</a></li>
-                            <li class="active">Data table</li>
+                            <li><a href="#">Data</a></li>
+                            <li class="active">Insert</li>
                         </ol>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     <div class="card-body">
                         <?php echo form_open(); ?>
                         <div class="form-group row">
-                            <label for="input-fk_bom" class="col-sm-2 col-form-label text-right">fk_bom</label>
+                            <label for="input-fk_bom" class="col-sm-2 col-form-label text-right">Bill of Material</label>
                             <div class="col-sm-8 col-md-4">
                                 <select name="fk_bom" class="form-control">
                                     <?php foreach ($bom as $key => $value): ?>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="input-quantity" class="col-sm-2 col-form-label text-right">quantity</label>
+                            <label for="input-quantity" class="col-sm-2 col-form-label text-right">Quantity</label>
                             <div class="col-sm-8 col-md-4">
                                 <input type="text" name="quantity" class="form-control" id="input-quantity" value="<?php echo set_value('quantity') ?>">
                                 <?php echo form_error('quantity') ?>
@@ -61,8 +61,7 @@
                         <div class="form-group row">
                             <label for="input-submit" class="col-sm-2 col-form-label text-right"></label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="submit" name="submit" value="Submit another Data" class="btn btn-primary">
-                                <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+                                <input type="submit" name="submit" value="Check Availibility" class="btn btn-primary">
                                 <a href="<?php echo base_url($c_name) ?>" class="btn btn-secondary">Back</a>
                             </div>
                         </div>

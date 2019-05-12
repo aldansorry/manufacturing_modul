@@ -13,8 +13,8 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="#"><?php echo $c_name ?></a></li>
-                            <li><a href="#">Table</a></li>
-                            <li class="active">Data table</li>
+                            <li><a href="#">Data</a></li>
+                            <li class="active">Table</li>
                         </ol>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                 "class": "text-center",
                 render: (data, type, row) => {
                     let ret = "";
-                    ret += ' <a href="#" onclick="update_form('+data+'); return false;" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
+                    ret += ' <a href="<?php echo base_url($c_name.'/detail/') ?>'+data+'" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
                     ret += ' <a href="<?php echo base_url($c_name.'/delete/') ?>'+data+'" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>';
                     return ret;
                 }

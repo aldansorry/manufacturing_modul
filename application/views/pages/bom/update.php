@@ -14,7 +14,7 @@
                         <ol class="breadcrumb text-right">
                             <li><a href="#"><?php echo $c_name ?></a></li>
                             <li><a href="#">Data</a></li>
-                            <li class="active">Insert</li>
+                            <li class="active">Update</li>
                         </ol>
                     </div>
                 </div>
@@ -36,21 +36,21 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Insert Data</strong>
+                        <strong class="card-title">Update Data</strong>
                     </div>
                     <div class="card-body">
                         <?php echo form_open(); ?>
                         <div class="form-group row">
                             <label for="input-name" class="col-sm-2 col-form-label text-right">Name</label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="text" name="name" class="form-control" id="input-name" value="<?php echo set_value('name') ?>">
+                                <input type="text" name="name" class="form-control" id="input-name" value="<?php echo $bom->name ?>">
                                 <?php echo form_error('name') ?>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="input-quantity" class="col-sm-2 col-form-label text-right">Quantity</label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="text" name="quantity" class="form-control" id="input-quantity" value="<?php echo set_value('quantity') ?>">
+                            <input type="text" name="quantity" class="form-control" id="input-quantity" value="<?php echo $bom->quantity ?>">
                                 <?php echo form_error('quantity') ?>
                             </div>
                         </div>
@@ -68,7 +68,23 @@
                             <label for="input-component" class="col-sm-2 col-form-label text-right">Component</label>
                             <div class="col-sm-8 col-md-4">
                                 <div id="component-container" class="mb-2">
-
+                                    <?php foreach ($component as $key => $value): ?>
+                                        <?php $id = ++$key ?>
+                                        <div class="input-group mt-2 component-title" id="component-<?php echo $id ?>-title">
+                                            <select name="component_product[]" class="form-control" id="select-<?php echo $id ?>">
+                                                <?php foreach ($product as $k => $v): ?>
+                                                    <option value="<?php echo $v->id_product ?>"><?php echo $v->name ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                            <input type="number" min="1" value="<?php echo $value->quantity ?>" name="component_quantity[]" class="form-control">
+                                            <div class="input-group-append">
+                                                <a class="btn btn-outline-danger component-button" onclick="remove_component(this.id)" id="component-<?php echo $id ?>"><i class="fa fa-trash"></i></a>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            $('#select-<?php echo $id ?>').val('<?php echo $value->fk_product ?>')
+                                        </script>
+                                    <?php endforeach ?>
                                 </div>
                                 <a href="#" class="btn btn-outline-primary" onclick="add_component()"><i class="fa fa-plus"></i> Add Component</a>
                             </div>
@@ -103,7 +119,7 @@
     </div>
 </div>
 <script>
-    var index = 1;
+    var index = <?php echo count($component)+1 ?>;
     var add_component = () =>{
         $('#component-sample').find('.component-title').attr('id','component-'+index+'-title');
         $('#component-sample').find('.component-button').attr('id','component-'+index);

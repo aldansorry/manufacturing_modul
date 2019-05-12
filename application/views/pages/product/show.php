@@ -13,8 +13,8 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="#"><?php echo $c_name ?></a></li>
-                            <li><a href="#">Table</a></li>
-                            <li class="active">Data table</li>
+                            <li><a href="#">Data</a></li>
+                            <li class="active">Table</li>
                         </ol>
                     </div>
                 </div>
@@ -90,7 +90,11 @@
             },
             { 
                 "title" : "Image",
-                "data": "image" 
+                render: (data,type,row) => {
+                    var ret = "";
+                    ret += '<img src="<?php echo base_url('assets/') ?>images/product/'+row.image+'" alt="" width="150px">';
+                    return ret;
+                } 
             },
             { 
                 "title" : "Type",
@@ -117,7 +121,7 @@
                 "class": "text-center",
                 render: (data, type, row) => {
                     let ret = "";
-                    ret += ' <a href="#" onclick="update_form('+data+'); return false;" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
+                    ret += ' <a href="<?php echo base_url($c_name.'/update/') ?>'+data+'" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
                     ret += ' <a href="<?php echo base_url($c_name.'/delete/') ?>'+data+'" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>';
                     return ret;
                 }

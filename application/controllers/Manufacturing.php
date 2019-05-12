@@ -49,13 +49,13 @@ class manufacturing extends CI_Controller {
 		if($this->form_validation->run() == false){
 			$this->load->view('layouts/default',$view);
 		}else{
-			var_dump($_POST);
 			$set = [
 				'quantity' => $this->input->post('quantity'),
 				'fk_bom' => $this->input->post('fk_bom'),
 				'created_by' => $this->session->userdata('id_users')
 			];
 			$insert = $this->db->insert('manufacturing',$set);
+			$insert_id = $this->db->insert_id();
 			if ($insert) {
 				$this->session->set_flashdata('alert_type','success');
 				$this->session->set_flashdata('alert_message','Insert <b>'.$set['name'].'</b> success');
@@ -64,14 +64,94 @@ class manufacturing extends CI_Controller {
 				$this->session->set_flashdata('alert_message','Insert <b>'.$set['name'].'</b> failed');
 			}
 
-			$condition = $this->input->post('submit') == "Submit";
-			if($condition){
-				redirect('Manufacturing');
-			}else{
-				redirect('Manufacturing/insert');
-			}
+			redirect('Manufacturing/detail/'.$insert_id);	
 		}
 	}
+
+	public function detail($id)
+	{
+		$this->db->select('manufacturing.*,(select name from bom where id_bom=manufacturing.fk_bom) as bom_name');
+		$this->db->from('manufacturing');
+		$this->db->where('id_manufacturing',$id);
+		$manufacturing = $this->db->get()->row(0);
+
+		
+
+		$view = [
+			'c_name' => "Manufacturing",
+			'pages' => 'manufacturing/detail',
+			'manufacturing' => $manufacturing
+		];
+
+		if ($manufacturing->status == 1) {
+			$this->db->select('product.name as product_name,(bom_component.quantity*manufacturing.quantity) quantity_need,product.quantity as quantity_stock');
+		$this->db->from('bom_component');
+		$this->db->join('product','bom_component.fk_product=product.id_product');
+		$this->db->join('bom','bom_component.fk_bom=bom.id_bom');
+		$this->db->join('manufacturing','bom.id_bom=manufacturing.fk_bom');
+		$this->db->where('bom_component.fk_bom',$manufacturing->fk_bom);
+		$component = $this->db->get()->result();
+		$view['component'] = $component;
+		}
+		$this->load->view('layouts/default',$view);
+	}
+
+	public function confirm($id)
+	{
+		$set = [
+			'status' => 2,
+		];
+		$this->db->where('id_manufacturing',$id);
+		$this->db->update('manufacturing',$set);
+
+		$this->db->select('bom_component.fk_product,(bom_component.quantity*manufacturing.quantity) quantity_need');
+		$this->db->from('bom_component');
+		$this->db->join('bom','bom_component.fk_bom=bom.id_bom');
+		$this->db->join('manufacturing','bom.id_bom=manufacturing.fk_bom');
+		$this->db->where('manufacturing.id_manufacturing',$id);
+		$query = $this->db->get();
+
+		foreach ($query->result() as $key => $value) {
+			$old = $this->db->where('id_product',$value->fk_product)->get('product')->row(0)->quantity;
+			$new = $old - $value->quantity_need;
+			$set_product['quantity'] = $new;
+			$this->db->where('id_product',$value->fk_product);
+			$this->db->update('product',$set_product);
+		}
+
+		redirect('Manufacturing/detail/'.$id);	
+	}
+
+	public function progress($id)
+	{
+		$set = [
+			'status' => 3,
+		];
+		$this->db->where('id_manufacturing',$id);
+		$this->db->update('manufacturing',$set);
+		redirect('Manufacturing/detail/'.$id);	
+	}
+
+	public function done($id)
+	{
+		$set = [
+			'status' => 4,
+		];
+		$this->db->where('id_manufacturing',$id);
+		$this->db->update('manufacturing',$set);
+
+		$this->db->select('manufacturing.*, (select fk_product from bom where id_bom = manufacturing.fk_bom) as fk_product');
+		$manufacturing = $this->db->where('id_manufacturing',$id)->get('manufacturing')->row(0);
+
+		$old = $this->db->where('id_product',$manufacturing->fk_product)->get('product')->row(0)->quantity;
+		$new = $old + $manufacturing->quantity;
+		$set_product['quantity'] = $new;
+		$this->db->where('id_product',$manufacturing->fk_product)->update('product',$set_product);
+
+		redirect('Manufacturing/detail/'.$id);	
+	}
+
+
 
 	public function delete($id)
 	{
