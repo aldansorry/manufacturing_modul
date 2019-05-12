@@ -25,7 +25,7 @@ class Bom extends CI_Controller {
 
 	public function get()
 	{
-		$this->db->select('*,(select name from product where id_product=bom.fk_product) as product_name');
+		$this->db->select('*,(select name from product where id_product=bom.fk_product) as product_name,,(select name from users as u where u.id_users=bom.created_by) as created_name');
 		$this->db->from('bom');
 		$query = $this->db->get();
 		$data['data'] = $query->result();

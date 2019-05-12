@@ -25,7 +25,7 @@ class Users extends CI_Controller {
 
 	public function get()
 	{
-		$this->db->select('*');
+		$this->db->select('*,(select name from users as u where u.id_users=users.created_by) as created_name');
 		$this->db->from('users');
 		$query = $this->db->get();
 		$data['data'] = $query->result();

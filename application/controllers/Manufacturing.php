@@ -25,7 +25,7 @@ class manufacturing extends CI_Controller {
 
 	public function get()
 	{
-		$this->db->select('manufacturing.*,bom.name as bom_name, product.name as product_name');
+		$this->db->select('manufacturing.*,bom.name as bom_name, product.name as product_name,,(select name from users as u where u.id_users=manufacturing.created_by) as created_name');
 		$this->db->from('manufacturing');
 		$this->db->join('bom','manufacturing.fk_bom=bom.id_bom','left');
 		$this->db->join('product','bom.fk_product=product.id_product','left');
@@ -148,14 +148,21 @@ class manufacturing extends CI_Controller {
 		$set_product['quantity'] = $new;
 		$this->db->where('id_product',$manufacturing->fk_product)->update('product',$set_product);
 
-		redirect('Manufacturing/detail/'.$id);	
+		redirect('Manufacturing');	
 	}
 
-
+	public function cancel($id)
+	{
+		$set = [
+			'status' => 0,
+		];
+		$this->db->where('id_manufacturing',$id);
+		$this->db->update('manufacturing',$set);
+		redirect('Manufacturing');	
+	}
 
 	public function delete($id)
 	{
-
 		$db_debug = $this->db->db_debug;
     	$this->db->db_debug = FALSE;
 		$this->db->where('id_manufacturing',$id);

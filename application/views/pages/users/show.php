@@ -114,6 +114,10 @@
                     return is_active;
                 } 
             },
+            { 
+                "title" : "Created By",
+                "data": "created_name" 
+            },
             {
                 "title": "Actions",
                 "visible":true,

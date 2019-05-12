@@ -41,9 +41,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <button id="btn-confirm" onclick="if (confirm('Confirm?')) window.location.href='<?php echo base_url('Manufacturing/confirm/'.$manufacturing->id_manufacturing) ?>'" class="btn <?php echo ($manufacturing->status == 1 ? 'btn-primary' : 'btn-outline-secondary') ?>">Confirm</button>
-                                <button id="btn-progress" onclick="if (confirm('progress?')) window.location.href='<?php echo base_url('Manufacturing/progress/'.$manufacturing->id_manufacturing) ?>'" class="btn <?php echo ($manufacturing->status == 2 ? 'btn-primary' : 'btn-outline-secondary') ?>">Progress</button>
-                                <button id="btn-done" onclick="if (confirm('Done?')) window.location.href='<?php echo base_url('Manufacturing/done/'.$manufacturing->id_manufacturing) ?>'" class="btn <?php echo ($manufacturing->status == 3 ? 'btn-primary' : 'btn-outline-secondary') ?>">Done</button>
+                                <button id="btn-confirm" onclick="if (confirm('Confirm?')) window.location.href='<?php echo base_url('Manufacturing/confirm/'.$manufacturing->id_manufacturing) ?>'" class="btn <?php echo ($manufacturing->status == 1 ? 'btn-primary' : 'btn-outline-secondary') ?>" disabled>Confirm</button>
+                                <button id="btn-progress" onclick="if (confirm('progress?')) window.location.href='<?php echo base_url('Manufacturing/progress/'.$manufacturing->id_manufacturing) ?>'" class="btn <?php echo ($manufacturing->status == 2 ? 'btn-primary' : 'btn-outline-secondary') ?>" disabled>Progress</button>
+                                <button id="btn-done" onclick="if (confirm('Done?')) window.location.href='<?php echo base_url('Manufacturing/done/'.$manufacturing->id_manufacturing) ?>'" class="btn <?php echo ($manufacturing->status == 3 ? 'btn-primary' : 'btn-outline-secondary') ?>" disabled>Done</button>
+                                <?php if ($manufacturing->status == 1): ?>
+                                    <button id="btn-cancel" onclick="if (confirm('Do you want to Cancel this Manufacturing?')) window.location.href='<?php echo base_url('Manufacturing/cancel/'.$manufacturing->id_manufacturing) ?>'" class="btn <?php echo ($manufacturing->status == 3 ? 'btn-primary' : 'btn-outline-secondary') ?> float-right">Cancel</button>
+                                <?php endif ?>
+
                             </div>
                         </div>
 
@@ -61,52 +65,56 @@
                         </div>
                         <?php if ($manufacturing->status == 1): ?>
                             <div class="row">
-                            <table class="table table-border table-hover">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Component</th>
-                                        <th>Needed</th>
-                                        <th>Stock</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $is_ready = true; ?>
-                                    <?php foreach ($component as $key => $value): ?>
+                                <table class="table table-border table-hover">
+                                    <thead>
                                         <tr>
-                                        <td><?php echo $key+1 ?></td>
-                                        <td><?php echo $value->product_name ?></td>
-                                        <td><?php echo $value->quantity_need ?></td>
-                                        <td><?php echo $value->quantity_stock ?></td>
-                                        <td>
-                                            <?php if ($value->quantity_need <= $value->quantity_stock): ?>
-                                                <span class="badge badge-primary">ready</span>
-                                            <?php else: ?>
-                                                <?php echo $is_ready = false; ?>
-                                                <span class="badge badge-danger">not ready</span>
-                                            <?php endif ?>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach ?>
-                                </tbody>
-                            </table>
-                            <?php if ($is_ready): ?>
-                                <script>
-                                $('#btn-confirm').attr('disabled',false);
-                            </script>
-                            <?php else: ?>
-                                <script>
-                                $('#btn-confirm').attr('disabled',true);
-                            </script>
+                                            <th></th>
+                                            <th>Component</th>
+                                            <th>Needed</th>
+                                            <th>Stock</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $is_ready = true; ?>
+                                        <?php foreach ($component as $key => $value): ?>
+                                            <tr>
+                                                <td><?php echo $key+1 ?></td>
+                                                <td><?php echo $value->product_name ?></td>
+                                                <td><?php echo $value->quantity_need ?></td>
+                                                <td><?php echo $value->quantity_stock ?></td>
+                                                <td>
+                                                    <?php if ($value->quantity_need <= $value->quantity_stock): ?>
+                                                        <span class="badge badge-primary">ready</span>
+                                                        <?php else: ?>
+                                                            <?php echo $is_ready = false; ?>
+                                                            <span class="badge badge-danger">not ready</span>
+                                                        <?php endif ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        </tbody>
+                                    </table>
+                                    <?php if ($is_ready): ?>
+                                        <script>
+                                            $('#btn-confirm').attr('disabled',false);
+                                        </script>
+                                    <?php endif ?>
+                                </div>
                             <?php endif ?>
                         </div>
-                        <?php endif ?>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
-</div>
+    <?php if ($manufacturing->status == 2): ?>
+        <script>
+            $('#btn-progress').attr('disabled',false);
+        </script>
+    <?php endif ?>
+    <?php if ($manufacturing->status == 3): ?>
+        <script>
+            $('#btn-done').attr('disabled',false);
+        </script>
+    <?php endif ?>

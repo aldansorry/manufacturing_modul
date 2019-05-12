@@ -114,6 +114,10 @@
                     return type;
                 } 
             },
+            { 
+                "title" : "Created By",
+                "data": "created_name" 
+            },
             {
                 "title": "Actions",
                 "data":'id_product',

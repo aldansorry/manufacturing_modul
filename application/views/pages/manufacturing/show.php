@@ -90,17 +90,42 @@
             },
             { 
                 "title" : "Status",
-                "data": "status" 
+                render: (data,type,row) => {
+                    var status = "";
+                    switch(row.status){
+                        case '1':
+                        status = '<span class="badge badge-secondary">check</span>';
+                        break;
+                        case '2':
+                        status = '<span class="badge badge-primary">confirmed</span>';
+                        break;
+                        case '3':
+                        status = '<span class="badge badge-info">progress</span>';
+                        break;
+                        case '4':
+                        status = '<span class="badge badge-success">done</span>';
+                        break;
+                        case '0':
+                        status = '<span class="badge badge-dark">canceled</span>';
+                        break;
+                    }
+                    return status;
+                }
+            },
+            { 
+                "title" : "Created By",
+                "data": "created_name" 
             },
             {
                 "title": "Actions",
-                "data":'id_manufacturing',
                 "visible":true,
                 "class": "text-center",
                 render: (data, type, row) => {
                     let ret = "";
-                    ret += ' <a href="<?php echo base_url($c_name.'/detail/') ?>'+data+'" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
-                    ret += ' <a href="<?php echo base_url($c_name.'/delete/') ?>'+data+'" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>';
+                    if (!(row.status == 0 || row.status == 4)) {
+                        ret += ' <a href="<?php echo base_url($c_name.'/detail/') ?>'+row.id_manufacturing+'" class="btn btn-xs btn-rounded btn-info"> <i class="fa fa-info-circle"></i> Detail</a>';
+                    }
+                    ret += ' <a href="<?php echo base_url($c_name.'/delete/') ?>'+row.id_manufacturing+'" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>';
                     return ret;
                 }
             }
