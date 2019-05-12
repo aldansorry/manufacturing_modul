@@ -6,6 +6,11 @@ class manufacturing extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$condition = $this->session->userdata('id_users') == null;
+		if($condition){
+			redirect('Login');
+		}
+		
 		$this->load->helper('form');
 	}
 

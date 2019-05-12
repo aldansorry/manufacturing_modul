@@ -6,6 +6,11 @@ class Users extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$condition = $this->session->userdata('id_users') == null || $this->session->userdata('role') != 1;
+		if($condition){
+			redirect('Login');
+		}
+
 		$this->load->helper('form');
 	}
 
