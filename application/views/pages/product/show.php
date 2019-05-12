@@ -35,6 +35,7 @@
             </div>
             <div class="col-md-12">
                 <a href="<?php echo base_url($c_name.'/insert') ?>" class="btn btn-primary mb-3">Insert</a>
+                <a href="<?php echo base_url($c_name.'/index/thumbnail') ?>" class="btn btn-info mb-3 float-right">View Thumbnail</a>
             </div>
             <div class="col-md-12">
                 <div class="card">

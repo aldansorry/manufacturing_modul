@@ -14,12 +14,19 @@ class Product extends CI_Controller {
 		$this->load->helper('form');
 	}
 
-	public function index()
+	public function index($thumbnail = null)
 	{
 		$view = [
 			'c_name' => "Product",
 			'pages' => 'product/show',
 		];
+		if($thumbnail != null){
+			$view['pages'] = 'product/show_thumbnail';
+			$this->db->select('*,(select name from users as u where u.id_users=product.created_by) as created_name');
+			$this->db->from('product');
+			$query = $this->db->get();
+			$view['product'] = $query->result();
+		}
 		$this->load->view('layouts/default',$view);
 	}
 
@@ -148,7 +155,7 @@ class Product extends CI_Controller {
 					'quantity' => $this->input->post('quantity'),
 					'type' => $this->input->post('type'),
 				];
-					$this->db->where('id_product',$id);
+				$this->db->where('id_product',$id);
 				$update = $this->db->update('product',$set);
 				if ($update) {
 					$this->session->set_flashdata('alert_type','success');
