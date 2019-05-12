@@ -27,7 +27,8 @@ class Login extends CI_Controller {
 
 		$this->db->where([
 			'username' => $username,
-			'password' => md5($password)
+			'password' => md5($password),
+			'is_active' => 1
 		]);
 		$this->db->from('users');
 		$query = $this->db->get();

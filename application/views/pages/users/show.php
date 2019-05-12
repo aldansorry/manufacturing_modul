@@ -13,8 +13,8 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="#"><?php echo $c_name ?></a></li>
-                            <li><a href="#">Table</a></li>
-                            <li class="active">Data table</li>
+                            <li><a href="#">Data</a></li>
+                            <li class="active">Table</li>
                         </ol>
                     </div>
                 </div>
@@ -101,17 +101,39 @@
             },
             { 
                 "title" : "Status",
-                "data": "is_active",
+                render: (data,type,row) => {
+                    var is_active = "";
+                    switch(row.is_active){
+                        case '1':
+                        is_active = '<span class="badge badge-primary">active</span>';
+                        break;
+                        case '0':
+                        is_active = '<span class="badge badge-warning">suspend</span>';
+                        break;
+                    }
+                    return is_active;
+                } 
             },
             {
                 "title": "Actions",
-                "data":'id_users',
                 "visible":true,
                 "class": "text-center",
                 render: (data, type, row) => {
                     let ret = "";
-                    ret += ' <a href="#" onclick="update_form('+data+'); return false;" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
-                    ret += ' <a href="<?php echo base_url($c_name.'/delete/') ?>'+data+'" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>';
+                    ret += ' <a href="<?php echo base_url($c_name.'/update/') ?>'+row.id_users+'" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
+                    
+                    let user_id = '<?php echo $this->session->userdata('id_users') ?>';
+                    var condition = (row.id_users === user_id);
+                    if(condition){
+                       
+                    }else{
+                        if(row.is_active == 1){
+                            ret += ' <a href="<?php echo base_url($c_name.'/change_active/') ?>'+row.id_users+'/0" class="btn btn-xs btn-rounded btn-warning"> <i class="fa fa-warning"></i> Suspend</a>';
+                        }else{
+                            ret += ' <a href="<?php echo base_url($c_name.'/change_active/') ?>'+row.id_users+'/1" class="btn btn-xs btn-rounded btn-info"> <i class="fa fa-info-circle"></i> Active</a>';
+                        }
+                        ret += ' <a href="<?php echo base_url($c_name.'/delete/') ?>'+row.id_users+'" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>';
+                    }
                     return ret;
                 }
             }
