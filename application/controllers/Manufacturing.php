@@ -52,6 +52,7 @@ class manufacturing extends CI_Controller {
 			$set = [
 				'quantity' => $this->input->post('quantity'),
 				'fk_bom' => $this->input->post('fk_bom'),
+				'date_start' => $this->input->post('date_start'),
 				'created_by' => $this->session->userdata('id_users')
 			];
 			$insert = $this->db->insert('manufacturing',$set);
@@ -136,6 +137,7 @@ class manufacturing extends CI_Controller {
 	{
 		$set = [
 			'status' => 4,
+			'date_finish' => date('Y-m-d')
 		];
 		$this->db->where('id_manufacturing',$id);
 		$this->db->update('manufacturing',$set);

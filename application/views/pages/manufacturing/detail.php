@@ -63,6 +63,12 @@
                                 <input type="text" readonly="" class="form-control" id="input-quantity" value="<?php echo $manufacturing->quantity ?>">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="input-date_start" class="col-sm-2 col-form-label text-right">Date Start</label>
+                            <div class="col-sm-8 col-md-4">
+                                <input type="text" readonly="" class="form-control" id="input-date_start" value="<?php echo $manufacturing->date_start ?>">
+                            </div>
+                        </div>
                         <?php if ($manufacturing->status == 1): ?>
                             <div class="row">
                                 <table class="table table-border table-hover">

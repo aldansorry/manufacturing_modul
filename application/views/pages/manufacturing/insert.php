@@ -57,6 +57,15 @@
                                 <?php echo form_error('quantity') ?>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="input-date_start" class="col-sm-2 col-form-label text-right">Date Start</label>
+                            <div class="col-sm-8 col-md-4">
+                                <input type="date" name="date_start" class="form-control" id="input-date_start" value="<?php echo (set_value('date_start') != "" ? set_value('date_start') : date('Y-m-d')) ?>">
+                                <?php echo form_error('date_start') ?>
+                            </div>
+                        </div>
+
                         
                         <div class="form-group row">
                             <label for="input-submit" class="col-sm-2 col-form-label text-right"></label>

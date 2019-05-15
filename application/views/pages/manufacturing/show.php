@@ -89,6 +89,14 @@
                 "data": "quantity" 
             },
             { 
+                "title" : "Date Start",
+                "data": "date_start" 
+            },
+            { 
+                "title" : "Date Finish",
+                "data": "date_finish" 
+            },
+            { 
                 "title" : "Status",
                 render: (data,type,row) => {
                     var status = "";
