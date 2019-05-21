@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 15 Mei 2019 pada 05.15
--- Versi Server: 10.1.19-MariaDB
--- PHP Version: 7.0.13
+-- Generation Time: May 21, 2019 at 06:43 AM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `bom`
+-- Table structure for table `bom`
 --
 
 CREATE TABLE `bom` (
@@ -36,18 +38,18 @@ CREATE TABLE `bom` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `bom`
+-- Dumping data for table `bom`
 --
 
 INSERT INTO `bom` (`id_bom`, `name`, `quantity`, `fk_product`, `created_by`, `datecreated`) VALUES
 (2, '1', 1, 1, 2, '2019-05-12 03:14:57'),
 (3, 'asd', 1, 1, 2, '2019-05-12 06:19:57'),
-(4, 'Aldhan Biuzar Yahya', 10, 5, 2, '2019-05-12 13:16:16');
+(4, 'Aldhan Biuzar Yahya', 10, 1, 2, '2019-05-12 13:16:16');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `bom_component`
+-- Table structure for table `bom_component`
 --
 
 CREATE TABLE `bom_component` (
@@ -58,17 +60,18 @@ CREATE TABLE `bom_component` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `bom_component`
+-- Dumping data for table `bom_component`
 --
 
 INSERT INTO `bom_component` (`id_bom_component`, `fk_bom`, `fk_product`, `quantity`) VALUES
 (18, 3, 1, 1),
-(19, 4, 6, 1);
+(20, 4, 6, 1),
+(21, 4, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `manufacturing`
+-- Table structure for table `manufacturing`
 --
 
 CREATE TABLE `manufacturing` (
@@ -83,7 +86,7 @@ CREATE TABLE `manufacturing` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `manufacturing`
+-- Dumping data for table `manufacturing`
 --
 
 INSERT INTO `manufacturing` (`id_manufacturing`, `fk_bom`, `date_start`, `date_finish`, `quantity`, `status`, `created_by`, `datecreated`) VALUES
@@ -93,39 +96,42 @@ INSERT INTO `manufacturing` (`id_manufacturing`, `fk_bom`, `date_start`, `date_f
 (5, 4, '0000-00-00', '0000-00-00', 10, 2, 2, '2019-05-12 13:16:32'),
 (6, 2, '0000-00-00', '0000-00-00', 1, 1, 2, '2019-05-12 13:29:44'),
 (7, 4, '0000-00-00', '0000-00-00', 1, 0, 2, '2019-05-12 13:30:18'),
-(8, 4, '2019-05-15', '2019-05-15', 1, 4, 2, '2019-05-15 02:05:24');
+(8, 4, '2019-05-15', '2019-05-15', 1, 4, 2, '2019-05-15 02:05:24'),
+(9, 2, '2019-05-21', NULL, 2, 2, 2, '2019-05-21 04:08:40');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `product`
+-- Table structure for table `product`
 --
 
 CREATE TABLE `product` (
   `id_product` int(11) NOT NULL,
   `name` varchar(32) NOT NULL,
   `price` int(11) NOT NULL,
+  `tax` varchar(20) NOT NULL,
   `quantity` int(11) NOT NULL,
   `image` varchar(128) NOT NULL,
   `type` tinyint(1) NOT NULL,
+  `category` int(1) NOT NULL,
   `created_by` int(11) NOT NULL,
   `datecreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `product`
+-- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id_product`, `name`, `price`, `quantity`, `image`, `type`, `created_by`, `datecreated`) VALUES
-(1, '1', 1, 103, '3f9a24d18d2b2217ac68a52e73fcff74.jpg', 1, 2, '2019-05-12 02:48:58'),
-(4, 'ald ans sorry', 1, 100, '38033b020e4eae7edd06c6e033e9ceb0.png', 1, 2, '2019-05-12 04:37:38'),
-(5, 'Aldhan', 100000, 21, '4375f57a7ee08f7c35691093751f370f.png', 1, 2, '2019-05-12 13:15:20'),
-(6, 'Ald_han', 1000, 99, 'bfd6c84b5a64a283e27e6a6ca40f8bca.png', 1, 2, '2019-05-12 13:15:52');
+INSERT INTO `product` (`id_product`, `name`, `price`, `tax`, `quantity`, `image`, `type`, `category`, `created_by`, `datecreated`) VALUES
+(1, '1', 1, 'Tax 10%', 103, '3f9a24d18d2b2217ac68a52e73fcff74.jpg', 1, 2, 2, '2019-05-12 02:48:58'),
+(4, 'ald ans sorry', 1, 'PPn 15%', 100, '38033b020e4eae7edd06c6e033e9ceb0.png', 1, 1, 2, '2019-05-12 04:37:38'),
+(5, 'Aldhan', 100000, '', 21, '4375f57a7ee08f7c35691093751f370f.png', 1, 0, 2, '2019-05-12 13:15:20'),
+(6, 'Ald_han', 1000, '', 99, 'bfd6c84b5a64a283e27e6a6ca40f8bca.png', 1, 0, 2, '2019-05-12 13:15:52');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -140,7 +146,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `role`, `is_active`, `created_by`, `datecreated`) VALUES
@@ -198,61 +204,67 @@ ALTER TABLE `users`
 --
 ALTER TABLE `bom`
   MODIFY `id_bom` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `bom_component`
 --
 ALTER TABLE `bom_component`
-  MODIFY `id_bom_component` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_bom_component` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
 --
 -- AUTO_INCREMENT for table `manufacturing`
 --
 ALTER TABLE `manufacturing`
-  MODIFY `id_manufacturing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_manufacturing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
   MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `bom`
+-- Constraints for table `bom`
 --
 ALTER TABLE `bom`
   ADD CONSTRAINT `bom_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id_users`);
 
 --
--- Ketidakleluasaan untuk tabel `bom_component`
+-- Constraints for table `bom_component`
 --
 ALTER TABLE `bom_component`
   ADD CONSTRAINT `bom_component_ibfk_1` FOREIGN KEY (`fk_bom`) REFERENCES `bom` (`id_bom`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `bom_component_ibfk_2` FOREIGN KEY (`fk_product`) REFERENCES `product` (`id_product`);
 
 --
--- Ketidakleluasaan untuk tabel `manufacturing`
+-- Constraints for table `manufacturing`
 --
 ALTER TABLE `manufacturing`
   ADD CONSTRAINT `manufacturing_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id_users`),
   ADD CONSTRAINT `manufacturing_ibfk_2` FOREIGN KEY (`fk_bom`) REFERENCES `bom` (`id_bom`);
 
 --
--- Ketidakleluasaan untuk tabel `product`
+-- Constraints for table `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id_users`);
 
 --
--- Ketidakleluasaan untuk tabel `users`
+-- Constraints for table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id_users`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

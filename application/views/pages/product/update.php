@@ -63,6 +63,18 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="input-tax" class="col-sm-2 col-form-label text-right">Tax</label>
+                            <div class="col-sm-8 col-md-4">
+                                <input type="text" name="tax" class="form-control" list="tax-list" id="input-tax" value="<?php echo $product->tax ?>">
+                                <?php echo form_error('tax') ?>
+                                <datalist id="tax-list">
+                                    <?php foreach ($tax as $key => $value): ?>
+                                        <option value="<?php echo $value->tax ?>"></option>
+                                    <?php endforeach ?>
+                              </datalist>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="input-quantity" class="col-sm-2 col-form-label text-right">Quantity</label>
                             <div class="col-sm-8 col-md-4">
                                 <input type="number" min="0" name="quantity" class="form-control" id="input-quantity" value="<?php echo $product->quantity ?>">
@@ -79,6 +91,18 @@
                                 </select>
                                 <script>
                                     $('select[name="type"]').val('<?php echo $product->type ?>')
+                                </script>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="input-category" class="col-sm-2 col-form-label text-right">Category</label>
+                            <div class="col-sm-8 col-md-4">
+                                <select name="category" class="form-control">
+                                    <option value="1">Component</option>
+                                    <option value="2">Bill of Material</option>
+                                </select>
+                                <script>
+                                    $('select[name="category"]').val('<?php echo $product->category ?>')
                                 </script>
                             </div>
                         </div>

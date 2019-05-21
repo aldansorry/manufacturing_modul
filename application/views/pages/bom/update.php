@@ -58,7 +58,7 @@
                             <label for="input-fk_product" class="col-sm-2 col-form-label text-right">Product</label>
                             <div class="col-sm-8 col-md-4">
                                 <select name="fk_product" class="form-control">
-                                    <?php foreach ($product as $key => $value): ?>
+                                    <?php foreach ($product_bom as $key => $value): ?>
                                         <option value="<?php echo $value->id_product ?>"><?php echo $value->name ?></option>
                                     <?php endforeach ?>
                                 </select>
@@ -72,7 +72,7 @@
                                         <?php $id = ++$key ?>
                                         <div class="input-group mt-2 component-title" id="component-<?php echo $id ?>-title">
                                             <select name="component_product[]" class="form-control" id="select-<?php echo $id ?>">
-                                                <?php foreach ($product as $k => $v): ?>
+                                                <?php foreach ($product_component as $k => $v): ?>
                                                     <option value="<?php echo $v->id_product ?>"><?php echo $v->name ?></option>
                                                 <?php endforeach ?>
                                             </select>
@@ -108,7 +108,7 @@
 <div style="display: none" id="component-sample">
     <div class="input-group mt-2 component-title" id="">
         <select name="component_product[]" class="form-control">
-            <?php foreach ($product as $key => $value): ?>
+            <?php foreach ($product_component as $key => $value): ?>
                 <option value="<?php echo $value->id_product ?>"><?php echo $value->name ?></option>
             <?php endforeach ?>
         </select>

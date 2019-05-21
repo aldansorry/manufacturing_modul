@@ -42,7 +42,41 @@
                         <strong class="card-title">Data Table</strong>
                     </div>
                     <div class="card-body">
-                        <table id="data-table" class="table table-striped table-bordered"></table>
+                        <table id="data-table" class="table table-striped table-bordered">
+                            <thead>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Created By</th>
+                                <th>Component</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($bom as $key => $value): ?>
+                                    <?php 
+                                    $this->db->select('bom_component.*,product.name as product_name');
+                                    $this->db->join('product',"bom_component.fk_product = product.id_product");
+                                    $component = $this->db->where('fk_bom',$value->id_bom)->get('bom_component')->result(); ?>
+                                    <tr>
+                                        <td><?php echo $key + 1; ?></td>
+                                        <td><?php echo $value->name ?></td>
+                                        <td><?php echo $value->product_name ?></td>
+                                        <td><?php echo $value->quantity ?></td>
+                                        <td><?php echo $value->created_name ?></td>
+                                        <td>
+                                            <?php foreach ($component as $k => $v): ?>
+                                                <?php echo $v->product_name." (".$v->quantity.")"; ?><br>
+                                            <?php endforeach ?>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo base_url($c_name.'/update/'.$value->id_bom) ?>" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>
+                                            <a href="<?php echo base_url($c_name.'/delete/'.$value->id_bom) ?>" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -61,51 +95,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#data-table').DataTable( {
-            "ajax": {
-                'url': "<?= base_url($c_name.'/get') ?>",
-            },
-            "columns": [
-            {
-                "title" : "No",
-                "width" : "15px",
-                "data": null,
-                "visible":true,
-                "class": "text-center",
-                render: (data, type, row, meta) => {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }
-            },
-            { 
-                "title" : "Name",
-                "data": "name" 
-            },
-            { 
-                "title" : "Product",
-                "data": "product_name" 
-            },
-            { 
-                "title" : "Quantity",
-                "data": "quantity" 
-            },
-            { 
-                "title" : "Created By",
-                "data": "created_name" 
-            },
-            {
-                "title": "Actions",
-                "data":'id_bom',
-                "visible":true,
-                "class": "text-center",
-                render: (data, type, row) => {
-                    let ret = "";
-                    ret += ' <a href="<?php echo base_url($c_name.'/update/') ?>'+data+'" class="btn btn-xs btn-rounded btn-success"> <i class="fa fa-pencil"></i> Edit</a>';
-                    ret += ' <a href="<?php echo base_url($c_name.'/delete/') ?>'+data+'" class="btn btn-xs btn-rounded btn-danger"> <i class="fa fa-trash"></i> Hapus</a>';
-                    return ret;
-                }
-            }
-            ]
-        } );
+        $('#data-table').DataTable();
     });
 
     var table_refresh = () => {

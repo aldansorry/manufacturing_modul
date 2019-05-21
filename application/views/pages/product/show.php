@@ -82,22 +82,6 @@
                 "data": "name" 
             },
             { 
-                "title" : "Price",
-                "data": "price" 
-            },
-            { 
-                "title" : "Quantity",
-                "data": "quantity" 
-            },
-            { 
-                "title" : "Image",
-                render: (data,type,row) => {
-                    var ret = "";
-                    ret += '<img src="<?php echo base_url('assets/') ?>images/product/'+row.image+'" alt="" width="150px">';
-                    return ret;
-                } 
-            },
-            { 
                 "title" : "Type",
                 render: (data,type,row) => {
                     var type = "";
@@ -116,8 +100,43 @@
                 } 
             },
             { 
+                "title" : "Category",
+                render: (data,type,row) => {
+                    var category = "";
+                    switch(row.category){
+                        case '1':
+                        category = 'Component';
+                        break;
+                        case '2':
+                        category = 'Bill of Material';
+                        break;
+                    }
+                    return category;
+                } 
+            },
+            { 
+                "title" : "Quantity",
+                "data": "quantity" 
+            },
+            { 
+                "title" : "Price",
+                "data": "price" 
+            },
+            { 
+                "title" : "Tax",
+                "data": "tax" 
+            },
+            { 
                 "title" : "Created By",
                 "data": "created_name" 
+            },
+            { 
+                "title" : "Image",
+                render: (data,type,row) => {
+                    var ret = "";
+                    ret += '<img src="<?php echo base_url('assets/') ?>images/product/'+row.image+'" alt="" width="150px">';
+                    return ret;
+                } 
             },
             {
                 "title": "Actions",

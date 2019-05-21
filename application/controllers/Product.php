@@ -41,9 +41,11 @@ class Product extends CI_Controller {
 
 	public function insert()
 	{
+
 		$view = [
 			'c_name' => "Product",
 			'pages' => 'product/insert',
+			'tax' => $this->db->select('tax')->group_by('tax')->get('product')->result(),
 		];
 
 		$this->load->library('form_validation');
@@ -73,9 +75,11 @@ class Product extends CI_Controller {
 				$set = [
 					'name' => $this->input->post('name'),
 					'price' => $this->input->post('price'),
+					'tax' => $this->input->post('tax'),
 					'quantity' => $this->input->post('quantity'),
 					'image' => $upload_data['file_name'],
 					'type' => $this->input->post('type'),
+					'category' => $this->input->post('category'),
 					'created_by' => $this->session->userdata('id_users')
 				];
 				$insert = $this->db->insert('product',$set);
@@ -103,6 +107,7 @@ class Product extends CI_Controller {
 			'c_name' => "Product",
 			'pages' => 'product/update',
 			'product' => $this->db->where('id_product',$id)->get('product')->row(0),
+			'tax' => $this->db->select('tax')->group_by('tax')->get('product')->result(),
 		];
 
 		$this->load->library('form_validation');
@@ -133,9 +138,11 @@ class Product extends CI_Controller {
 					$set = [
 						'name' => $this->input->post('name'),
 						'price' => $this->input->post('price'),
+						'tax' => $this->input->post('tax'),
 						'quantity' => $this->input->post('quantity'),
 						'image' => $upload_data['file_name'],
 						'type' => $this->input->post('type'),
+						'category' => $this->input->post('category'),
 					];
 					$this->db->where('id_product',$id);
 					$update = $this->db->update('product',$set);
@@ -152,8 +159,10 @@ class Product extends CI_Controller {
 				$set = [
 					'name' => $this->input->post('name'),
 					'price' => $this->input->post('price'),
+					'tax' => $this->input->post('tax'),
 					'quantity' => $this->input->post('quantity'),
 					'type' => $this->input->post('type'),
+					'category' => $this->input->post('category'),
 				];
 				$this->db->where('id_product',$id);
 				$update = $this->db->update('product',$set);

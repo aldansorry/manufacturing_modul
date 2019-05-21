@@ -68,6 +68,11 @@
 											<td><?php echo ($value->type == 1 ? 'Storeable':'Consumable') ?></td>
 										</tr>
 										<tr>
+											<td>Category</td>
+											<td>:</td>
+											<td><?php echo ($value->type == 1 ? 'Component':'Bill of Material') ?></td>
+										</tr>
+										<tr>
 											<td>Created By</td>
 											<td>:</td>
 											<td><?php echo $value->created_name ?></td>

@@ -63,50 +63,71 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="input-quantity" class="col-sm-2 col-form-label text-right">Quantity</label>
+                            <label for="input-tax" class="col-sm-2 col-form-label text-right">Tax</label>
                             <div class="col-sm-8 col-md-4">
-                                <input type="number" min="0" name="quantity" class="form-control" id="input-quantity" value="<?php echo set_value('quantity') ?>">
-                                <?php echo form_error('quantity') ?>
-                            </div>
+                                <input type="text" name="tax" list="tax-list" class="form-control" id="input-tax" value="<?php echo set_value('tax') ?>">
+                                <?php echo form_error('tax') ?>
+                                <datalist id="tax-list">
+                                    <?php foreach ($tax as $key => $value): ?>
+                                        <option value="<?php echo $value->tax ?>"></option>
+                                    <?php endforeach ?>
+                              </datalist>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="input-quantity" class="col-sm-2 col-form-label text-right">Quantity</label>
+                        <div class="col-sm-8 col-md-4">
+                            <input type="number" min="0" name="quantity" class="form-control" id="input-quantity" value="<?php echo set_value('quantity') ?>">
+                            <?php echo form_error('quantity') ?>
                         </div>
-                        <div class="form-group row">
-                            <label for="input-type" class="col-sm-2 col-form-label text-right">Type</label>
-                            <div class="col-sm-8 col-md-4">
-                                <select name="type" class="form-control">
-                                    <option value="1">Storeable</option>
-                                    <option value="2">Consumable</option>
-                                    <option value="3">Services</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="input-submit" class="col-sm-2 col-form-label text-right"></label>
-                            <div class="col-sm-8 col-md-4">
-                                <input type="submit" name="submit" value="Submit another Data" class="btn btn-primary">
-                                <input type="submit" name="submit" value="Submit" class="btn btn-primary">
-                                <a href="<?php echo base_url($c_name) ?>" class="btn btn-secondary">Back</a>
-                            </div>
-                        </div>
-                        <?php echo form_close(); ?>
                     </div>
+                    <div class="form-group row">
+                        <label for="input-type" class="col-sm-2 col-form-label text-right">Type</label>
+                        <div class="col-sm-8 col-md-4">
+                            <select name="type" class="form-control">
+                                <option value="1">Storeable</option>
+                                <option value="2">Consumable</option>
+                                <option value="3">Services</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="input-category" class="col-sm-2 col-form-label text-right">Category</label>
+                        <div class="col-sm-8 col-md-4">
+                            <select name="category" class="form-control">
+                                <option value="1">Component</option>
+                                <option value="2">Bill of Material</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="input-submit" class="col-sm-2 col-form-label text-right"></label>
+                        <div class="col-sm-8 col-md-4">
+                            <input type="submit" name="submit" value="Submit another Data" class="btn btn-primary">
+                            <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+                            <a href="<?php echo base_url($c_name) ?>" class="btn btn-secondary">Back</a>
+                        </div>
+                    </div>
+                    <?php echo form_close(); ?>
                 </div>
             </div>
-
-
         </div>
+
+
     </div>
+</div>
 </div>
 <script>
     function readURL(input) {
 
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
-    reader.onload = function(e) {
-      $('#image-preview').attr('src', e.target.result);
-    }
+        reader.onload = function(e) {
+          $('#image-preview').attr('src', e.target.result);
+      }
 
-    reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(input.files[0]);
   }
 }
 

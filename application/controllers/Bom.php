@@ -16,20 +16,23 @@ class Bom extends CI_Controller {
 
 	public function index()
 	{
+		$this->db->select('*,(select name from product where id_product=bom.fk_product) as product_name,,(select name from users as u where u.id_users=bom.created_by) as created_name');
+		$this->db->from('bom');
+		$query = $this->db->get();
+		$bom = $query->result();
+		
+
 		$view = [
 			'c_name' => "Bom",
 			'pages' => 'bom/show',
+			'bom' => $bom,
 		];
 		$this->load->view('layouts/default',$view);
 	}
 
 	public function get()
 	{
-		$this->db->select('*,(select name from product where id_product=bom.fk_product) as product_name,,(select name from users as u where u.id_users=bom.created_by) as created_name');
-		$this->db->from('bom');
-		$query = $this->db->get();
-		$data['data'] = $query->result();
-		echo json_encode($data);
+		
 	}
 
 	public function insert()
@@ -37,7 +40,8 @@ class Bom extends CI_Controller {
 		$view = [
 			'c_name' => "Bom",
 			'pages' => 'bom/insert',
-			'product' => $this->db->get('product')->result(),
+			'product_bom' => $this->db->where('category',2)->get('product')->result(),
+			'product_component' => $this->db->where('category',1)->get('product')->result(),
 		];
 
 		$this->load->library('form_validation');
