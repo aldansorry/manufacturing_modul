@@ -7,9 +7,11 @@
                     </li>
 
                     <li class="menu-title">Master Data</li><!-- /.menu-title -->
-                    <li>
+                    <?php if ($this->session->userdata('role') == 1): ?>
+                        <li>
                         <a href="<?php echo base_url('Users') ?>"> <i class="menu-icon ti-user"></i>Users </a>
                     </li>
+                    <?php endif ?>
                     <li>
                         <a href="<?php echo base_url('Product') ?>"> <i class="menu-icon ti-shopping-cart"></i>Product </a>
                     </li>

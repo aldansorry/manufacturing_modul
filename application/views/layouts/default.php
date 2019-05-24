@@ -33,10 +33,13 @@
         <footer class="site-footer">
             <div class="footer-inner bg-white">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         Copyright &copy; 2018 Ela Admin
                     </div>
-                    <div class="col-sm-6 text-right">
+                    <div class="col-sm-4 text-center">
+                        Edited at &commat; 2019
+                    </div>
+                    <div class="col-sm-4 text-right">
                         Designed by <a href="https://colorlib.com">Colorlib</a>
                     </div>
                 </div>
